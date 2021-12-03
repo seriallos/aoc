@@ -6,7 +6,6 @@ import _ from 'lodash';
 function solve(input) {
   // const inputInts = _.map(input, i => parseInt(i, 10));
   const entries = _.map(input, l => parseInt(l, 10));
-  console.log(entries);
 
   let answer;
   for(let i = 0; i < entries.length; i += 1) {
