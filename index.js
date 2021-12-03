@@ -27,10 +27,10 @@ async function main() {
   console.log();
 
   try {
-    const testInput = await getInput(year, day, 'test.txt');
+    const testInput = await getInput(year, day, 'example.txt');
     const realInput = await getInput(year, day, 'input.txt');
 
-    const module = await import(`./${year}/day${day}/solution.js`);
+    const module = await import(`./${year}/day${day}/answer.js`);
     const solve = module.default;
 
     if (testInput.length) {
