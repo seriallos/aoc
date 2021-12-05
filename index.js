@@ -45,7 +45,7 @@ async function main() {
       console.log('Test input is empty, skipping');
     }
 
-    if (testInput.length) {
+    if (realInput.length) {
       console.log();
       console.log();
       console.log('====================================');
