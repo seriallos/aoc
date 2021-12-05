@@ -38,7 +38,7 @@ async function main() {
       console.log('||            Test Input          ||');
       console.log('====================================');
       const testStart = performance.now();
-      solve(testInput);
+      solve(testInput, true);
       const testDuration = performance.now() - testStart;
       console.log(`Runtime: ${_.round(testDuration, 3)}ms`);
     } else {
@@ -52,7 +52,7 @@ async function main() {
       console.log('||            Real Input          ||');
       console.log('====================================');
       const realStart = performance.now();
-      solve(realInput);
+      solve(realInput, false);
       const realDuration = performance.now() - realStart;
       console.log(`Runtime: ${_.round(realDuration, 3)}ms`);
     } else {
