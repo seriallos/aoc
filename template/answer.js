@@ -3,12 +3,10 @@
 import _ from 'lodash';
 import chalk from 'chalk';
 
-function solve(input, isTest) {
-  // const inputInts = _.map(input, i => parseInt(i, 10));
+const LOG_TEST = true;
+const LOG_REAL = false;
 
-  const LOG_TEST = true;
-  const LOG_REAL = false;
-
+export const part1 = (input, isTest) => {
   // eslint-disable-next-line no-unused-vars
   const log = (...args) => {
     if ((LOG_TEST && isTest) || (LOG_REAL && !isTest)) {
@@ -16,19 +14,20 @@ function solve(input, isTest) {
     }
   };
 
-  let part1Answer = null;
-  let part2Answer = null;
+  let answer = null;
 
-  // -----------------------------------------------------------
-  // SOLVE HERE
-  // -----------------------------------------------------------
-
-
-
-
-  // Display answers
-  console.log(chalk.bgWhite.black.bold(`  Part 1: ${part1Answer}  `));
-  console.log(chalk.bgWhite.black.bold(`  Part 2: ${part2Answer}  `));
+  console.log(chalk.bgWhite.black.bold(`  Part 1: ${answer}  `));
 }
 
-export default solve;
+export const part2 = (input, isTest) => {
+  // eslint-disable-next-line no-unused-vars
+  const log = (...args) => {
+    if ((LOG_TEST && isTest) || (LOG_REAL && !isTest)) {
+      console.log(...args);
+    }
+  };
+
+  let answer = null;
+
+  console.log(chalk.bgWhite.black.bold(`  Part 2: ${answer}  `));
+}
