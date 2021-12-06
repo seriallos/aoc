@@ -1,6 +1,8 @@
 /* eslint-env node */
 // eslint-disable-next-line no-unused-vars
 import _ from 'lodash';
+import chalk from 'chalk';
+import { drawGrid } from '../../util.js';
 
 // eslint-disable-next-line no-unused-vars
 function solve(input) {
@@ -120,16 +122,18 @@ function solve(input) {
       }
     }
   });
+  drawGrid(map);
   part1Answer = overlaps.size;
 
-  console.log(`Part 1: ${part1Answer}`);
+  console.log();
+  console.log(chalk.bgWhite.black.bold(`  Part 1: ${part1Answer}  `));
 
 
   // part 2
   let part2Answer = overlaps.size;
 
 
-  console.log(`Part 2: ${part2Answer}`);
+  console.log(chalk.bgWhite.black.bold(`  Part 2: ${part2Answer}  `));
 }
 
 export default solve;
