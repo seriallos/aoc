@@ -68,10 +68,10 @@ async function main() {
       const realStart = performance.now();
 
       if (part1 || part2) {
-        part1(realInput, true);
-        part2(realInput, true);
+        part1(realInput, false);
+        part2(realInput, false);
       } else {
-        solve(realInput, true);
+        solve(realInput, false);
       }
 
       const realDuration = performance.now() - realStart;
