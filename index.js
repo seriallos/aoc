@@ -2,6 +2,7 @@
 import { performance } from 'perf_hooks';
 
 import _ from 'lodash';
+import chalk from 'chalk';
 
 import { getInput } from './util.js';
 
@@ -34,13 +35,14 @@ async function main() {
     const solve = module.default;
 
     if (testInput.length) {
-      console.log('====================================');
-      console.log('||            Test Input          ||');
-      console.log('====================================');
+      console.log(chalk.bold('===================================='));
+      console.log(chalk.bold('||            Test Input          ||'));
+      console.log(chalk.bold('===================================='));
       const testStart = performance.now();
       solve(testInput, true);
       const testDuration = performance.now() - testStart;
-      console.log(`Runtime: ${_.round(testDuration, 3)}ms`);
+      console.log();
+      console.log(chalk.gray(`Runtime: ${_.round(testDuration, 3)}ms`));
     } else {
       console.log('Test input is empty, skipping');
     }
@@ -48,13 +50,14 @@ async function main() {
     if (realInput.length) {
       console.log();
       console.log();
-      console.log('====================================');
-      console.log('||            Real Input          ||');
-      console.log('====================================');
+      console.log(chalk.bold('===================================='));
+      console.log(chalk.bold('||            Real Input          ||'));
+      console.log(chalk.bold('===================================='));
       const realStart = performance.now();
       solve(realInput, false);
       const realDuration = performance.now() - realStart;
-      console.log(`Runtime: ${_.round(realDuration, 3)}ms`);
+      console.log();
+      console.log(chalk.gray(`Runtime: ${_.round(realDuration, 3)}ms`));
     } else {
       console.log('Real input is empty, skipping');
     }
