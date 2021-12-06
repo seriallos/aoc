@@ -1,6 +1,7 @@
 /* eslint-env node */
 // eslint-disable-next-line no-unused-vars
 import _ from 'lodash';
+import chalk from 'chalk';
 
 function solve(input, isTest) {
   // const inputInts = _.map(input, i => parseInt(i, 10));
@@ -26,8 +27,8 @@ function solve(input, isTest) {
 
 
   // Display answers
-  console.log(`Part 1: ${part1Answer}`);
-  console.log(`Part 2: ${part2Answer}`);
+  console.log(chalk.bgWhite.black.bold(`  Part 1: ${part1Answer}  `));
+  console.log(chalk.bgWhite.black.bold(`  Part 2: ${part2Answer}  `));
 }
 
 export default solve;
