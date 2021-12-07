@@ -1,7 +1,6 @@
 /* eslint-env node */
 // eslint-disable-next-line no-unused-vars
 import _ from 'lodash';
-import chalk from 'chalk';
 
 const LOG_TEST = true;
 const LOG_REAL = false;
@@ -16,7 +15,7 @@ export const part1 = (input, isTest) => {
 
   let answer = null;
 
-  console.log(chalk.bgWhite.black.bold(`  Part 1: ${answer}  `));
+  return answer;
 }
 
 export const part2 = (input, isTest) => {
@@ -29,5 +28,5 @@ export const part2 = (input, isTest) => {
 
   let answer = null;
 
-  console.log(chalk.bgWhite.black.bold(`  Part 2: ${answer}  `));
+  return answer;
 }
