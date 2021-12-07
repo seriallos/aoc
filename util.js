@@ -13,6 +13,9 @@ export const getInput = async (year, day, filename) => {
     const inputPath = path.join(__dirname, `${year}`, `day${day}`, filename);
     const rawData = await fs.readFile(inputPath, 'utf8');
     const input = _.split(rawData, '\n');
+    if (input.length === 1 && input[0] === '') {
+      return null;
+    }
     return input;
   } catch (err) {
     const e = new Error(`Year ${year} Day ${day} ${filename} cannot be loaded`);

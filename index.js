@@ -28,7 +28,6 @@ async function main() {
   }
 
   console.log(`Running year ${year} day ${day}...`);
-  console.log();
 
   try {
     const __filename = fileURLToPath(import.meta.url);
@@ -49,7 +48,7 @@ async function main() {
 
     for (const file of inputFiles) {
       const input = await getInput(year, day, file);
-      if (input.length) {
+      if (input) {
         const isTest = file !== 'input.txt';
         const decoWidth = 40;
         const spaces = _.join(_.map(_.range(_.floor((decoWidth - 4 - file.length) / 2)), () => ' '), '');
@@ -57,6 +56,7 @@ async function main() {
 
         const fileColor = isTest ? chalk.magenta : chalk.blue;
 
+        console.log();
         console.log(fileColor(_.join(_.map(_.range(0, decoWidth), () => '='), '')));
         console.log(fileColor(`||${spaces}${file}${nudge}${spaces}||`));
         console.log(fileColor(_.join(_.map(_.range(0, decoWidth), () => '='), '')));
@@ -88,11 +88,9 @@ async function main() {
           console.log(answer(_.range(0, blockWidth).map(() => ' ').join('')));
         }
 
-
-        console.log();
         console.log(chalk.gray(`Runtime: ${_.round(duration, 3)}ms`));
       } else {
-        console.log('input is empty, skipping');
+        console.log(chalk.bgYellow.black(`!! ${file} is empty, skipping`));
       }
     }
   } catch (err) {
