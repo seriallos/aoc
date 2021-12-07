@@ -51,6 +51,9 @@ export const part2 = (input, isTest) => {
   const log = (...args) => {
     if ((LOG_TEST && isTest) || (LOG_REAL && !isTest)) {
       console.log(...args);
+    } else if (!logWarned) {
+      console.log('Logging is disabled for this run');
+      logWarned = true;
     }
   };
 
