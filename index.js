@@ -1,4 +1,7 @@
 /* eslint-env node */
+import { promises as fs } from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
 import { performance } from 'perf_hooks';
 
 import _ from 'lodash';
@@ -28,58 +31,69 @@ async function main() {
   console.log();
 
   try {
-    const testInput = await getInput(year, day, 'example.txt');
-    const realInput = await getInput(year, day, 'input.txt');
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const dir = await fs.opendir(path.join(__dirname, String(year), `day${day}`));
+    const inputFiles = [];
+    for await (const dirent of dir) {
+      if (path.extname(dirent.name) === '.txt') {
+        inputFiles.push(dirent.name);
+      }
+    }
+    inputFiles.sort();
 
     const module = await import(`./${year}/day${day}/answer.js`);
     const solve = module.default;
     const part1 = module.part1;
     const part2 = module.part2;
 
-    if (testInput.length) {
-      console.log(chalk.bold('===================================='));
-      console.log(chalk.bold('||            Test Input          ||'));
-      console.log(chalk.bold('===================================='));
+    for (const file of inputFiles) {
+      const input = await getInput(year, day, file);
+      if (input.length) {
+        const isTest = file !== 'input.txt';
+        const decoWidth = 40;
+        const spaces = _.join(_.map(_.range(_.floor((decoWidth - 4 - file.length) / 2)), () => ' '), '');
+        const nudge = file.length % 2 === 1 ? ' ' : '';
 
-      const testStart = performance.now();
+        const fileColor = isTest ? chalk.magenta : chalk.blue;
 
-      if (part1 || part2) {
-        part1(testInput, true);
-        part2(testInput, true);
+        console.log(fileColor(_.join(_.map(_.range(0, decoWidth), () => '='), '')));
+        console.log(fileColor(`||${spaces}${file}${nudge}${spaces}||`));
+        console.log(fileColor(_.join(_.map(_.range(0, decoWidth), () => '='), '')));
+
+
+        const start = performance.now();
+
+        let answer1, answer2;
+        if (part1 || part2) {
+          answer1 = part1(input, isTest);
+          answer2 = part2(input, isTest);
+        } else {
+          solve(input, isTest);
+        }
+
+        const duration = performance.now() - start;
+        if (answer1 !== undefined || answer2 !== undefined) {
+          const blockWidth = 40;
+          const answer = chalk.bgCyan.black.bold;
+
+          const answer1Msg = `Part 1: ${answer1}`;
+          const answer2Msg = `Part 2: ${answer2}`;
+          const padding1 = _.range(0, blockWidth - answer1Msg.length - 2).map(() => ' ').join('');
+          const padding2 = _.range(0, blockWidth - answer2Msg.length - 2).map(() => ' ').join('');
+
+          console.log(answer(_.range(0, blockWidth).map(() => ' ').join('')));
+          console.log(answer(`  ${answer1Msg}${padding1}`));
+          console.log(answer(`  ${answer2Msg}${padding2}`));
+          console.log(answer(_.range(0, blockWidth).map(() => ' ').join('')));
+        }
+
+
+        console.log();
+        console.log(chalk.gray(`Runtime: ${_.round(duration, 3)}ms`));
       } else {
-        solve(testInput, true);
+        console.log('input is empty, skipping');
       }
-
-      const testDuration = performance.now() - testStart;
-
-      console.log();
-      console.log(chalk.gray(`Runtime: ${_.round(testDuration, 3)}ms`));
-    } else {
-      console.log('Test input is empty, skipping');
-    }
-
-    if (realInput.length) {
-      console.log();
-      console.log();
-      console.log(chalk.bold('===================================='));
-      console.log(chalk.bold('||            Real Input          ||'));
-      console.log(chalk.bold('===================================='));
-
-      const realStart = performance.now();
-
-      if (part1 || part2) {
-        part1(realInput, false);
-        part2(realInput, false);
-      } else {
-        solve(realInput, false);
-      }
-
-      const realDuration = performance.now() - realStart;
-
-      console.log();
-      console.log(chalk.gray(`Runtime: ${_.round(realDuration, 3)}ms`));
-    } else {
-      console.log('Real input is empty, skipping');
     }
   } catch (err) {
     console.log(err);
