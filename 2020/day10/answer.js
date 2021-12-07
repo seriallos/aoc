@@ -37,7 +37,7 @@ export const part1 = (input, isTest) => {
   }
   answer = counts[1] * counts[3];
 
-  console.log(chalk.bgWhite.black.bold(`  Part 1: ${answer}  `));
+  return answer;
 }
 
 export const part2 = (input, isTest) => {
@@ -96,5 +96,5 @@ export const part2 = (input, isTest) => {
     answer *= findPaths(groups[i]);
   }
 
-  console.log(chalk.bgWhite.black.bold(`  Part 2: ${answer}  `));
+  return answer;
 }
