@@ -63,16 +63,24 @@ async function main() {
 
 
         const start = performance.now();
+        let duration1;
+        let duration2;
 
         let answer1, answer2;
         if (part1 || part2) {
+          const start1 = performance.now();
           answer1 = part1(input, isTest);
+          duration1 = performance.now() - start1;
+
+          const start2 = performance.now();
           answer2 = part2(input, isTest);
+          duration2 = performance.now() - start2;
         } else {
           solve(input, isTest);
         }
 
         const duration = performance.now() - start;
+
         if (answer1 !== undefined || answer2 !== undefined) {
           const blockWidth = 40;
           const answer = chalk.bgCyan.black.bold;
@@ -88,7 +96,12 @@ async function main() {
           console.log(answer(_.range(0, blockWidth).map(() => ' ').join('')));
         }
 
-        console.log(chalk.gray(`Runtime: ${_.round(duration, 3)}ms`));
+        if (duration1 || duration2) {
+          console.log(chalk.gray(`Part 1 Runtime: ${_.round(duration1, 3)}ms`));
+          console.log(chalk.gray(`Part 2 Runtime: ${_.round(duration2, 3)}ms`));
+        }
+        console.log(chalk.gray(` Total Runtime: ${_.round(duration, 3)}ms`));
+
       } else {
         console.log(chalk.bgYellow.black(`!! ${file} is empty, skipping`));
       }
