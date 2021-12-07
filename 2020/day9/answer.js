@@ -41,10 +41,13 @@ function solve(input, isTest) {
         // find contiguous list of numbers that add up to the invalid number
         for (let i = 0; i < full.length - 1; i += 1) {
           const group = [full[i]];
+          let sum = full[i];
           for (let j = i + 1; j < full.length; j += 1) {
             group.push(full[j]);
-            if (_.sum(group) === num) {
+            sum += full[j];
+            if (sum === num) {
               part2Answer = _.min(group) + _.max(group);
+              break;
             }
           }
         }
