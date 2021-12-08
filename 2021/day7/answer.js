@@ -68,11 +68,14 @@ export const part2 = (input, isTest) => {
   });
 
   const fuelCost = m => {
+    return (m * (m + 1)) / 2;
+    /*
     let cost = 0;
     for (let i = 0; i <= m; i += 1) {
       cost += i;
     }
     return cost;
+    */
   };
 
   let leastMove = Infinity;
@@ -83,7 +86,6 @@ export const part2 = (input, isTest) => {
       total += cost;
     }
     if (total < leastMove) {
-      log('new best position', i, 'cost', total);
       leastMove = total;
     }
   }
