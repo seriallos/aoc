@@ -29,7 +29,7 @@ export const part1 = (input, isTest) => {
 
 
   let leastMove = Infinity;
-  for (let i = 0; i < positions.length; i += 1) {
+  for (let i = 0; i < _.max(positions); i += 1) {
     let total = 0;
     for (let j = 0; j < positions.length; j += 1) {
       if (i !== j) {
