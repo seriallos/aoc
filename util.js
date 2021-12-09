@@ -34,6 +34,11 @@ export const drawGrid = (data, options) => {
       yMin: 0,
       yMax: null,
       hashes: true,
+      chars: {
+        [true]: '#',
+        [false]: '.',
+      },
+      hPadding: 0,
     },
   );
 
@@ -50,10 +55,12 @@ export const drawGrid = (data, options) => {
     return;
   }
 
+  const pad = _.range(0, opts.hPadding).map(() => ' ').join('');
+
   if (opts.hashes) {
     process.stdout.write('    ');
     for (let x = opts.xMin; x <= opts.xMax; x += 1) {
-      process.stdout.write(chalk.gray(`${x % 10} `));
+      process.stdout.write(chalk.gray(`${x % 10}${pad}`));
     }
     process.stdout.write('\n');
     process.stdout.write('\n');
@@ -63,8 +70,17 @@ export const drawGrid = (data, options) => {
       process.stdout.write(chalk.gray(`${y % 10}   `));
     }
     for (let x = opts.xMin; x <= opts.xMax; x += 1) {
-      process.stdout.write((data[y] && data[y][x]) ? String(data[y][x]) : opts.empty);
-      process.stdout.write(' ');
+      let value = opts.empty;
+      if (data[y] && data[y][x]) {
+        value = data[y][x];
+        if (opts.chars[value]) {
+          value = opts.chars[value];
+        } else {
+          value = String(value);
+        }
+      }
+      process.stdout.write(value);
+      process.stdout.write(pad);
     }
     process.stdout.write('\n');
   }
