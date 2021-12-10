@@ -38,7 +38,7 @@ export const drawGrid = (data, options) => {
         [true]: '#',
         [false]: '.',
       },
-      hPadding: 0,
+      hPadding: 1,
     },
   );
 
