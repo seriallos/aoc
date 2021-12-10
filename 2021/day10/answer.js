@@ -25,7 +25,6 @@ export const part1 = (input, isTest) => {
 
 
   const openers = '({<[';
-  const closers = ')}>]';
   const stack = [];
   const points = {
     ')': 3,
@@ -57,7 +56,6 @@ export const part1 = (input, isTest) => {
         }
       }
       if (corrupt) {
-        log('corrupt line', line);
         score += points[ch];
       }
     });
@@ -86,13 +84,6 @@ export const part2 = (input, isTest) => {
 
 
   const openers = '({<[';
-  const closers = ')}>]';
-  const points = {
-    ')': 3,
-    ']': 57,
-    '}': 1197,
-    '>': 25137,
-  };
   const scores = [];
   _.each(input, line => {
     if (!line) {
@@ -136,7 +127,6 @@ export const part2 = (input, isTest) => {
 
   const middle = (scores.length - 1) / 2;
   scores.sort((a, b) => a - b);
-  log(scores, scores.length, scores[middle]);
 
   answer = scores[middle];
 
