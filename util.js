@@ -44,7 +44,7 @@ export const drawGrid = (data, options) => {
 
   // find max bounds
   for (let y = 0; y < data.length; y += 1) {
-    opts.yMax = y - 1;
+    opts.yMax = y;
     if (data[y] && data[y].length > opts.xMax) {
       opts.xMax = data[y].length - 1;
     }
