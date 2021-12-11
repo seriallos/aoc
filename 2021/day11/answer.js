@@ -83,7 +83,6 @@ export const part1 = (input, isTest) => {
         }
       }
     }
-    log('after step', step);
   }
 
 
@@ -119,7 +118,8 @@ export const part2 = (input, isTest) => {
 
 
 
-  for (let step = 1; step <= 1000; step += 1) {
+  let step = 1;
+  while (!answer) {
     // increment all by 1
     for (let y = 0; y < energy.length; y += 1) {
       const row = energy[y];
@@ -172,7 +172,7 @@ export const part2 = (input, isTest) => {
         }
       }
     }
-    log('after step', step);
+    step += 1;
   }
 
 
