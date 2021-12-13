@@ -38,7 +38,9 @@ export const drawGrid = (data, options) => {
         [true]: '#',
         [false]: '.',
       },
-      hPadding: 1,
+      hPadding: 0,
+      xCutoff: 80,
+      yCutoff: 30,
     },
   );
 
@@ -50,26 +52,25 @@ export const drawGrid = (data, options) => {
     }
   }
 
-  if (opts.xMax > 80) {
-    console.log(chalk.red('!! drawGrid: Grid is too wide to show'));
-    return;
+  if (opts.xMax > opts.xCutoff) {
+    console.log(chalk.red('!! drawGrid: Grid width is cut off'));
   }
 
   const pad = _.range(0, opts.hPadding).map(() => ' ').join('');
 
   if (opts.hashes) {
     process.stdout.write('    ');
-    for (let x = opts.xMin; x <= opts.xMax; x += 1) {
+    for (let x = opts.xMin; x <= _.min([opts.xMax, opts.xCutoff]); x += 1) {
       process.stdout.write(chalk.gray(`${x % 10}${pad}`));
     }
     process.stdout.write('\n');
     process.stdout.write('\n');
   }
-  for (let y = opts.yMin; y <= opts.yMax; y += 1) {
+  for (let y = opts.yMin; y <= _.min([opts.yMax, opts.yCutoff]); y += 1) {
     if (opts.hashes) {
       process.stdout.write(chalk.gray(`${y % 10}   `));
     }
-    for (let x = opts.xMin; x <= opts.xMax; x += 1) {
+    for (let x = opts.xMin; x <= _.min([opts.xMax, opts.xCutoff]); x += 1) {
       let value = opts.empty;
       if (data[y] && data[y][x]) {
         value = data[y][x];
