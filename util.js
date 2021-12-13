@@ -39,8 +39,8 @@ export const drawGrid = (data, options) => {
         [false]: '.',
       },
       hPadding: 0,
-      xCutoff: 80,
-      yCutoff: 30,
+      xCutoff: 90,
+      yCutoff: 20,
     },
   );
 
@@ -53,7 +53,10 @@ export const drawGrid = (data, options) => {
   }
 
   if (opts.xMax > opts.xCutoff) {
-    console.log(chalk.red('!! drawGrid: Grid width is cut off'));
+    console.log(chalk.yellow(`!! drawGrid: Grid truncated, xMax = ${opts.xMax}, xCutoff = ${opts.xCutoff}`));
+  }
+  if (opts.yMax > opts.yCutoff) {
+    console.log(chalk.yellow(`!! drawGrid: Grid truncated, yMax = ${opts.yMax}, yCutoff = ${opts.yCutoff}`));
   }
 
   const pad = _.range(0, opts.hPadding).map(() => ' ').join('');
@@ -62,6 +65,9 @@ export const drawGrid = (data, options) => {
     process.stdout.write('    ');
     for (let x = opts.xMin; x <= _.min([opts.xMax, opts.xCutoff]); x += 1) {
       process.stdout.write(chalk.gray(`${x % 10}${pad}`));
+    }
+    if (opts.xMax > opts.xCutoff) {
+      process.stdout.write(chalk.yellow(` + ${opts.xMax - opts.xCutoff} cols`));
     }
     process.stdout.write('\n');
     process.stdout.write('\n');
@@ -84,6 +90,9 @@ export const drawGrid = (data, options) => {
       process.stdout.write(pad);
     }
     process.stdout.write('\n');
+  }
+  if (opts.yMax > opts.yCutoff) {
+    process.stdout.write(chalk.yellow(`+ ${opts.yMax - opts.yCutoff} rows\n`));
   }
   process.stdout.write('\n');
 };
