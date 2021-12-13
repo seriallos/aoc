@@ -20,6 +20,12 @@ export const part1 = (input, isTest) => {
 
   let answer = null;
 
+
+
+
+
+
+
   return answer;
 }
 
@@ -35,6 +41,14 @@ export const part2 = (input, isTest) => {
   };
 
   let answer = null;
+
+
+
+
+
+
+
+
 
   return answer;
 }
