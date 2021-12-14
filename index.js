@@ -69,11 +69,11 @@ async function main() {
         let answer1, answer2;
         if (part1 || part2) {
           const start1 = performance.now();
-          answer1 = part1(input, isTest);
+          answer1 = part1([...input], isTest);
           duration1 = performance.now() - start1;
 
           const start2 = performance.now();
-          answer2 = part2(input, isTest);
+          answer2 = part2([...input], isTest);
           duration2 = performance.now() - start2;
         } else {
           solve(input, isTest);
