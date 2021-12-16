@@ -40,7 +40,7 @@ export const drawGrid = (data, options) => {
       },
       hPadding: 0,
       xCutoff: 90,
-      yCutoff: 20,
+      yCutoff: 50,
     },
   );
 
