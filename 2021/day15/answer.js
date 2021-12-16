@@ -5,6 +5,7 @@ import { performance } from 'perf_hooks';
 
 // eslint-disable-next-line no-unused-vars
 import { drawGrid } from '../../util.js';
+import { MinPriorityQueue } from '@datastructures-js/priority-queue';
 
 const LOG_TEST = true;
 const LOG_REAL = true;
@@ -38,6 +39,8 @@ export const part1 = (input, isTest) => {
   const yMax = map.length - 1;
   const xMax = map[0].length - 1;
 
+
+
   const dirs = [
     [0, 1],
     [1, 0],
@@ -46,96 +49,60 @@ export const part1 = (input, isTest) => {
   ];
 
   const key = (x, y) => `${x}-${y}`;
-  const unkey = (k) => _.map(_.split(k, '-'), i => parseInt(i, 10));
+  const unkey = _.memoize((k) => _.map(_.split(k, '-'), i => parseInt(i, 10)));
 
-  /*
-  let leastRisk = Infinity;
-  const shortestPaths = new Map();
-  const findPath = (x, y, risk = 0, visited = new Set(), path = []) => {
-    if (risk > leastRisk) {
-      return;
-    }
-
-    const k = key(x, y);
-
-    const newVisited = new Set(visited);
-    newVisited.add(k);
-
-    const newPath = [...path];
-    newPath.push(k);
-
-    if (shortestPaths[k]) {
-      if (risk > shortestPaths[k]) {
-        return;
-      }
-    }
-    shortestPaths[k] = risk;
-
-    if (x === xMax && y === yMax) {
-      log(`found end. risk = ${risk}, path length = ${path.length}`);
-      if (risk < leastRisk) {
-        leastRisk = risk;
-      }
-    } else {
-      _.each(dirs, ([dx, dy]) => {
-        const tx = x + dx;
-        const ty = y + dy;
-        if (tx >= 0 && tx <= xMax && ty >= 0 && ty <= yMax) {
-          const newK = key(tx, ty);
-          if (!newVisited.has(newK)) {
-            const newRisk = risk + map[ty][tx];
-            if (!shortestPaths[newK] || newRisk < shortestPaths[newK]) {
-              findPath(tx, ty, newRisk, new Set(newVisited), [...newPath]);
-            }
-          }
-        }
-      });
-    }
-  }
-
-  findPath(0, 0);
-
-  answer = leastRisk;
-  */
-
-  const queue = [];
   const dist = {};
-  const prev = {};
+  const visited = new Set();
+  const pQueue = new MinPriorityQueue({
+    compare: (a, b) => dist[a] - dist[b],
+  });
 
   for (let y = 0; y <= yMax; y += 1) {
     for (let x = 0; x <= xMax; x += 1) {
       const v = key(x, y);
       dist[v] = Infinity;
-      prev[v] = null;
-      queue.push(v);
     }
   }
-  dist[key(0, 0)] = 0;
+
+  const source = key(0, 0);
   const target = key(xMax, yMax);
 
-  while (queue.length > 0) {
-    queue.sort((a, b) => dist[a] - dist[b]);
-    const u = queue.shift();
+  dist[source] = 0;
+
+  pQueue.enqueue(source);
+
+  while (pQueue.size() > 0) {
+    const u = pQueue.dequeue();
+
+    visited.add(u);
+
     const [x, y] = unkey(u);
 
     if (u === target) {
       break;
     }
 
-    const neighbors = _.filter(
-      _.map(dirs, ([dx, dy]) => [x + dx, y + dy, key(x + dx, y + dy)]),
-      ([vx, vy]) => vx >= 0 && vy >= 0 && vx <= xMax && vy <= yMax && _.includes(queue, key(vx, vy)),
-    );
-    _.each(neighbors, ([vx, vy, v]) => {
-      const alt = dist[u] + map[vy][vx];
-      if (alt < dist[v]) {
-        dist[v] = alt;
-        prev[v] = u;
+    for (let i = 0; i < dirs.length; i += 1) {
+      const [dx, dy] = dirs[i];
+      const vx = x + dx;
+      const vy = y + dy;
+      if (vx >= 0 && vy >= 0 && vx <= xMax && vy <= yMax) {
+        const v = key(vx, vy);
+        if (!visited.has(v)) {
+          const alt = dist[u] + map[vy][vx];
+          if (alt < dist[v]) {
+            dist[v] = alt;
+            pQueue.enqueue(v);
+          }
+        }
       }
-    });
+    }
   }
 
   answer = dist[target];
+
+
+
 
   return answer;
 }
@@ -190,12 +157,6 @@ export const part2 = (input, isTest) => {
   yMax = map.length - 1;
   xMax = map[0].length - 1;
 
-  // 11637517422274862853338597396444961841755517295286
-  // 11637517422274862853338597396444961841755517295286
-  //
-  // 67554889357866599146897761125791887223681299833479
-  // 67554889357866599146897761125791887223681299833479
-
 
   const dirs = [
     [0, 1],
@@ -207,51 +168,32 @@ export const part2 = (input, isTest) => {
   const key = (x, y) => `${x}-${y}`;
   const unkey = _.memoize((k) => _.map(_.split(k, '-'), i => parseInt(i, 10)));
 
-
-  let queue = [];
   const dist = {};
-  const prev = {};
   const visited = new Set();
+  const pQueue = new MinPriorityQueue({
+    compare: (a, b) => dist[a] - dist[b],
+  });
 
   for (let y = 0; y <= yMax; y += 1) {
     for (let x = 0; x <= xMax; x += 1) {
       const v = key(x, y);
       dist[v] = Infinity;
-      prev[v] = null;
-      queue.push(v);
     }
   }
-  dist[key(0, 0)] = 0;
+
+  const source = key(0, 0);
   const target = key(xMax, yMax);
 
-  let s = performance.now();
-  while (queue.length > 0) {
-    let min = Infinity;
-    let uIdx = null;
-    for (let i = 0; i < queue.length; i += 1) {
-      if (dist[queue[i]] < min) {
-        min = dist[queue[i]];
-        uIdx = i;
-      }
-    }
-    const u = queue[uIdx];
-    queue.splice(uIdx, 1);
+  dist[source] = 0;
+
+  pQueue.enqueue(source);
+
+  while (pQueue.size() > 0) {
+    const u = pQueue.dequeue();
+
     visited.add(u);
 
-    /*
-    const u = _.minBy(queue, v => dist[v]);
-    queue = _.pull(queue, u);
-    queue.sort((a, b) => dist[a] - dist[b]);
-    const u = queue.shift();
-    */
-
     const [x, y] = unkey(u);
-    if (queue.length % 1000 === 0) {
-      const now = performance.now();
-      const d = now - s;
-      s = now;
-      log(`Queue size: ${queue.length}, took ${_.round(d, 2).toLocaleString()}ms`);
-    }
 
     if (u === target) {
       break;
@@ -267,25 +209,11 @@ export const part2 = (input, isTest) => {
           const alt = dist[u] + map[vy][vx];
           if (alt < dist[v]) {
             dist[v] = alt;
-            prev[v] = u;
+            pQueue.enqueue(v);
           }
         }
       }
     }
-
-    /*
-    const neighbors = _.filter(
-      _.map(dirs, ([dx, dy]) => [x + dx, y + dy, key(x + dx, y + dy)]),
-      ([vx, vy, v]) => vx >= 0 && vy >= 0 && vx <= xMax && vy <= yMax && _.includes(queue, v),
-    );
-    _.each(neighbors, ([vx, vy, v]) => {
-      const alt = dist[u] + map[vy][vx];
-      if (alt < dist[v]) {
-        dist[v] = alt;
-        prev[v] = u;
-      }
-    });
-    */
   }
 
   answer = dist[target];
