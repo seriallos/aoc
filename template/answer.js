@@ -2,6 +2,9 @@
 // eslint-disable-next-line no-unused-vars
 import _ from 'lodash';
 
+// eslint-disable-next-line no-unused-vars
+import { drawGrid } from '../../util.js';
+
 const LOG_TEST = true;
 const LOG_REAL = false;
 
