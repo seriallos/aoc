@@ -97,10 +97,10 @@ async function main() {
         }
 
         if (duration1 || duration2) {
-          console.log(chalk.gray(`Part 1 Runtime: ${_.round(duration1, 2)}ms`));
-          console.log(chalk.gray(`Part 2 Runtime: ${_.round(duration2, 2)}ms`));
+          console.log(chalk.gray(`Part 1 Runtime: ${_.round(duration1, 2).toLocaleString()}ms`));
+          console.log(chalk.gray(`Part 2 Runtime: ${_.round(duration2, 2).toLocaleString()}ms`));
         }
-        console.log(chalk.gray(` Total Runtime: ${_.round(duration, 2)}ms`));
+        console.log(chalk.gray(` Total Runtime: ${_.round(duration, 2).toLocaleString()}ms`));
 
       } else {
         console.log(chalk.bgYellow.black(`!! ${file} is empty, skipping`));
