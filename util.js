@@ -11,7 +11,7 @@ export const getInput = async (year, day, filename) => {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
     const inputPath = path.join(__dirname, `${year}`, `day${day}`, filename);
-    const rawData = await fs.readFile(inputPath, 'utf8');
+    const rawData = _.trimEnd(await fs.readFile(inputPath, 'utf8'));
     const input = _.split(rawData, '\n');
     if (input.length === 1 && input[0] === '') {
       return null;
